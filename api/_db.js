@@ -1,12 +1,19 @@
-const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
-const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
-async function redisCmd(...args) {
-  const res = await fetch(`${UPSTASH_URL}/${args.map(encodeURIComponent).join("/")}`, {
-    headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` },
+async function supabase(method, path, body) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    method,
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: method === "POST" ? "resolution=merge-duplicates" : "",
+    },
+    body: body ? JSON.stringify(body) : undefined,
   });
-  const data = await res.json();
-  return data.result;
+  if (method === "DELETE" || res.status === 204) return null;
+  return res.json();
 }
 
 const DEFAULT_USERS = [
@@ -41,27 +48,28 @@ const DEFAULT_USERS = [
 ];
 
 export async function getUsers() {
-  const raw = await redisCmd("GET", "users");
-  if (!raw) {
-    await setUsers(DEFAULT_USERS);
+  const rows = await supabase("GET", "users?select=data");
+  if (!rows || rows.length === 0) {
+    // seed default user
+    for (const u of DEFAULT_USERS) {
+      await supabase("POST", "users", { id: u.id, data: u });
+    }
     return DEFAULT_USERS;
   }
-  return typeof raw === "string" ? JSON.parse(raw) : raw;
+  return rows.map((r) => r.data);
 }
 
 export async function setUsers(users) {
-  await redisCmd("SET", "users", JSON.stringify(users));
+  for (const u of users) {
+    await supabase("POST", "users", { id: u.id, data: u });
+  }
 }
 
 export async function getUser(id) {
-  const users = await getUsers();
-  return users.find((u) => u.id === id);
+  const rows = await supabase("GET", `users?id=eq.${id}&select=data`);
+  return rows && rows[0] ? rows[0].data : null;
 }
 
 export async function saveUser(updated) {
-  const users = await getUsers();
-  const idx = users.findIndex((u) => u.id === updated.id);
-  if (idx !== -1) users[idx] = updated;
-  else users.push(updated);
-  await setUsers(users);
+  await supabase("POST", "users", { id: updated.id, data: updated });
 }
