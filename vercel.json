@@ -1,18 +1,22 @@
 {
-  "rewrites": [
-    { "source": "/api/test", "destination": "/api/test.js" },
-    { "source": "/api/auth/login", "destination": "/api/auth/login.js" },
-    { "source": "/api/auth/admin-login", "destination": "/api/auth/admin-login.js" },
-    { "source": "/api/user/me", "destination": "/api/user/me.js" },
-    { "source": "/api/user/fetch-real-profile", "destination": "/api/user/fetch-real-profile.js" },
-    { "source": "/api/user/transaction", "destination": "/api/user/transaction.js" },
-    { "source": "/api/user/add-money", "destination": "/api/user/add-money.js" },
-    { "source": "/api/user/update-profile", "destination": "/api/user/update-profile.js" },
-    { "source": "/api/user/chat-message", "destination": "/api/user/chat-message.js" },
-    { "source": "/api/live-contacts", "destination": "/api/live-contacts.js" },
-    { "source": "/api/admin/users", "destination": "/api/admin/users.js" },
-    { "source": "/api/admin/delete-user/:id", "destination": "/api/admin/delete-user.js?id=:id" },
-    { "source": "/api/admin/delete-user", "destination": "/api/admin/delete-user.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "routes": [
+    { "src": "/api/test", "dest": "/api/test.js" },
+    { "src": "/api/auth/login", "dest": "/api/auth/login.js" },
+    { "src": "/api/auth/admin-login", "dest": "/api/auth/admin-login.js" },
+    { "src": "/api/user/me", "dest": "/api/user/me.js" },
+    { "src": "/api/user/fetch-real-profile", "dest": "/api/user/fetch-real-profile.js" },
+    { "src": "/api/user/transaction", "dest": "/api/user/transaction.js" },
+    { "src": "/api/user/add-money", "dest": "/api/user/add-money.js" },
+    { "src": "/api/user/update-profile", "dest": "/api/user/update-profile.js" },
+    { "src": "/api/user/chat-message", "dest": "/api/user/chat-message.js" },
+    { "src": "/api/live-contacts", "dest": "/api/live-contacts.js" },
+    { "src": "/api/admin/users", "dest": "/api/admin/users.js" },
+    { "src": "/api/admin/delete-user/(?<id>[^/]+)", "dest": "/api/admin/delete-user.js?id=$id" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
