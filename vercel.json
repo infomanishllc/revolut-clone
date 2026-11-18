@@ -11,6 +11,7 @@
     { "source": "/api/live-contacts", "destination": "/api/live-contacts.js" },
     { "source": "/api/admin/users", "destination": "/api/admin/users.js" },
     { "source": "/api/admin/delete-user/:id", "destination": "/api/admin/delete-user.js?id=:id" },
+    { "source": "/api/admin/delete-user", "destination": "/api/admin/delete-user.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
