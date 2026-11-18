@@ -1,5 +1,5 @@
-const { getUsers, setUsers } = require("../../lib/db.js");
-const { userPayload, getSecondsRemaining } = require("../../lib/helpers.js");
+const { getUsers, setUsers } = require("../db.js");
+const { userPayload, getSecondsRemaining } = require("../helpers.js");
 
 module.exports = async function handler(req, res) {
   if (req.method === "GET") {

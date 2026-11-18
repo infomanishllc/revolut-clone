@@ -1,5 +1,5 @@
-const { getUsers } = require("../lib/db.js");
-const { userPayload, getSecondsRemaining } = require("../lib/helpers.js");
+const { getUsers } = require("../db.js");
+const { userPayload, getSecondsRemaining } = require("../helpers.js");
 
 module.exports = async function handler(req, res) {
   const header = req.headers.authorization;
