@@ -1,4 +1,4 @@
-const { getUsers, setUsers } = require("../_db.js");
+const { getUsers, setUsers } = require("../lib/db.js");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
