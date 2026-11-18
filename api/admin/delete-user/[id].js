@@ -1,0 +1,14 @@
+const { getUsers, deleteUser } = require("../../../lib/db.js");
+
+module.exports = async function handler(req, res) {
+  if (req.method !== "DELETE") return res.status(405).end();
+  const id = req.query.id || req.url.split("/").pop().split("?")[0];
+  if (!id) return res.status(400).json({ error: "Missing user id" });
+  try {
+    const users = await getUsers();
+    const user = users.find((u) => u.id === id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    await deleteUser(id);
+    res.json({ success: true, name: user.name });
+  } catch(e) { res.status(500).json({ error: e.message }); }
+};
