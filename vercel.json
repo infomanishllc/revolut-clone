@@ -1,16 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/auth/login", "destination": "/api/auth/login.js" },
-    { "source": "/api/auth/admin-login", "destination": "/api/auth/admin-login.js" },
-    { "source": "/api/user/me", "destination": "/api/user/me.js" },
-    { "source": "/api/user/fetch-real-profile", "destination": "/api/user/fetch-real-profile.js" },
-    { "source": "/api/user/transaction", "destination": "/api/user/transaction.js" },
-    { "source": "/api/user/add-money", "destination": "/api/user/add-money.js" },
-    { "source": "/api/user/update-profile", "destination": "/api/user/update-profile.js" },
-    { "source": "/api/user/chat-message", "destination": "/api/user/chat-message.js" },
-    { "source": "/api/live-contacts", "destination": "/api/live-contacts.js" },
-    { "source": "/api/admin/users", "destination": "/api/admin/users.js" },
-    { "source": "/api/admin/delete-user/:id", "destination": "/api/admin/delete-user.js" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
