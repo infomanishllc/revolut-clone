@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
     if (!user.isActive) return res.status(403).json({ error: "Account is disabled." });
     const secondsRemaining = Math.floor(getSecondsRemaining(user));
     if (user.firstLoginAt && secondsRemaining <= 0) return res.status(403).json({ error: "Your session has expired. Access is no longer available." });
-    const deviceId = Buffer.from((req.headers["user-agent"] || "") + (req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "")).toString("base64").slice(0, 32);
+    const deviceId = Buffer.from(req.headers["user-agent"] || "unknown").toString("base64").slice(0, 40);
     if (user.deviceId && user.deviceId !== deviceId) return res.status(403).json({ error: "This access code is already in use on another device." });
     if (!user.deviceId) { user.deviceId = deviceId; }
     if (!user.firstLoginAt) {
