@@ -1,10 +1,10 @@
-export function getSecondsRemaining(user) {
+function getSecondsRemaining(user) {
   if (!user.firstLoginAt) return user.durationMinutes * 60;
   const elapsed = (Date.now() - new Date(user.firstLoginAt).getTime()) / 1000;
   return Math.max(0, user.durationMinutes * 60 - elapsed);
 }
 
-export function userPayload(user) {
+function userPayload(user) {
   return {
     id: user.id,
     name: user.name,
@@ -34,7 +34,7 @@ const LAST  = ["Gregory","Alexander","Watts","George","Moreno","Harris","Ramirez
 const MALE_P   = [13,27,30,34,39,42,43,50,51,59,60,65,68,70,76,84,86,99,0,5];
 const FEMALE_P = [22,25,27,30,33,47,55,57,58,59,70,72,74,76,77,90,92,11,22,25];
 
-export function generateContacts() {
+function generateContacts() {
   const contacts = [];
   const used = new Set();
   for (let i = 0; i < 20; i++) {
@@ -59,7 +59,7 @@ export function generateContacts() {
   return contacts;
 }
 
-export function generateFakeProfile() {
+function generateFakeProfile() {
   const fi = rand(0,19), li = rand(0,19);
   const first = FIRST[fi], last = LAST[li];
   const isFemale = fi % 2 === 0;
@@ -74,3 +74,5 @@ export function generateFakeProfile() {
     avatarUrl: `https://randomuser.me/api/portraits/${gender}/${portraits[rand(0,19)]}.jpg`
   };
 }
+
+module.exports = { getSecondsRemaining, userPayload, generateContacts, generateFakeProfile };

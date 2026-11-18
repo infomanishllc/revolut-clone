@@ -1,16 +1,12 @@
-import { getUsers } from "../_db.js";
-import { userPayload, getSecondsRemaining } from "../_helpers.js";
+const { getUsers } = require("../_db.js");
+const { userPayload, getSecondsRemaining } = require("../_helpers.js");
 
-function authUser(req, users) {
+module.exports = async function handler(req, res) {
   const header = req.headers.authorization;
-  if (!header) return null;
+  if (!header) return res.status(401).json({ error: "No authorization token" });
   const token = header.split(" ")[1];
-  return users.find((u) => u.id === token) || null;
-}
-
-export default async function handler(req, res) {
   const users = await getUsers();
-  const user = authUser(req, users);
-  if (!user) return res.status(401).json({ error: "No authorization token" });
+  const user = users.find((u) => u.id === token);
+  if (!user) return res.status(401).json({ error: "Invalid token" });
   res.json({ user: userPayload(user), secondsRemaining: Math.floor(getSecondsRemaining(user)), durationMinutes: user.durationMinutes });
-}
+};

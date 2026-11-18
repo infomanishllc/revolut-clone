@@ -1,7 +1,7 @@
-import { getUsers, setUsers } from "../_db.js";
-import { userPayload, getSecondsRemaining } from "../_helpers.js";
+const { getUsers, setUsers } = require("../_db.js");
+const { userPayload, getSecondsRemaining } = require("../_helpers.js");
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method === "GET") {
     const users = await getUsers();
     return res.json({
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
       name,
       initials: name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2),
       revtag: revtag || `@${name.toLowerCase().replace(/\s+/g, "")}`,
-      avatarUrl: avatarUrl || "",
+      avatarUrl: avatarUrl || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random()*99)}.jpg`,
       accessCode,
       balance: parseFloat(balance) || 0,
       investBalance: 0,
@@ -47,4 +47,4 @@ export default async function handler(req, res) {
     return res.json({ success: true, user: newUser });
   }
   res.status(405).end();
-}
+};
