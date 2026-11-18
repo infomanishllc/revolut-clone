@@ -2,6 +2,7 @@ const { getUsers, setUsers } = require("../../lib/db.js");
 const { userPayload, getSecondsRemaining } = require("../../lib/helpers.js");
 
 module.exports = async function handler(req, res) {
+  try {
   if (req.method === "GET") {
     const users = await getUsers();
     return res.json({
@@ -47,4 +48,5 @@ module.exports = async function handler(req, res) {
     return res.json({ success: true, user: newUser });
   }
   res.status(405).end();
+  } catch(e) { console.error(e); res.status(500).json({ error: e.message }); }
 };
