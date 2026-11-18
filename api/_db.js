@@ -65,6 +65,10 @@ export async function setUsers(users) {
   }
 }
 
+export async function deleteUser(id) {
+  await supabase("DELETE", `users?id=eq.${id}`);
+}
+
 export async function getUser(id) {
   const rows = await supabase("GET", `users?id=eq.${id}&select=data`);
   return rows && rows[0] ? rows[0].data : null;
