@@ -22,7 +22,7 @@ const DEFAULT_USERS = [
     name: "Eleanor Whitmore",
     initials: "EW",
     revtag: "@eleanorwhitmore",
-    avatarUrl: "https://unavatar.io/revolut/eleanorwhitmore?fallback=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1534528741775-53994a69daeb%3Fw%3D200",
+    avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
     accessCode: "123456",
     balance: 38318,
     investBalance: 5944.82,
