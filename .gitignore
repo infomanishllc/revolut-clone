@@ -6,3 +6,5 @@ assets/REAL_FILENAME.js
 server.js
 .env
 data.json
+.vercel
+.env*
