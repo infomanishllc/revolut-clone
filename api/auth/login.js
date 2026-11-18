@@ -13,8 +13,15 @@ module.exports = async function handler(req, res) {
     if (user.firstLoginAt && secondsRemaining <= 0) return res.status(403).json({ error: "Your session has expired. Access is no longer available." });
     const deviceId = Buffer.from((req.headers["user-agent"] || "") + (req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "")).toString("base64").slice(0, 32);
     if (user.deviceId && user.deviceId !== deviceId) return res.status(403).json({ error: "This access code is already in use on another device." });
-    if (!user.deviceId) { user.deviceId = deviceId; await saveUser(user); }
-    res.json({ token: user.id, user: userPayload(user), secondsRemaining, durationMinutes: user.durationMinutes });
+    if (!user.deviceId) { user.deviceId = deviceId; }
+    if (!user.firstLoginAt) {
+      user.firstLoginAt = new Date().toISOString();
+      user.expiresAt = new Date(Date.now() + user.durationMinutes * 60 * 1000).toISOString();
+      user.hasStarted = true;
+    }
+    await saveUser(user);
+    const updatedSeconds = Math.floor(getSecondsRemaining(user));
+    res.json({ token: user.id, user: userPayload(user), secondsRemaining: updatedSeconds, durationMinutes: user.durationMinutes });
   } catch (e) {
     res.status(500).json({ error: e.message, stack: e.stack });
   }
